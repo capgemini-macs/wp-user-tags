@@ -154,3 +154,32 @@ function rce_ut_process_form() {
 		}
 	}
 }
+
+/**
+ * Returns a list of allowed HTML tags for wp_kses_post() method extended with custom HTML tags 
+ */
+function extended_kses_post_html() {
+	return array_merge(
+		wp_kses_allowed_html( 'post' ),
+		[
+			'iframe' => [
+				'src'             => true,
+				'height'          => true,
+				'width'           => true,
+				'frameborder'     => true,
+				'allowfullscreen' => true,
+			],
+			'input' => [
+				'type'  => true,
+				'max'   => true,
+				'min'   => true,
+				'name'  => true,
+				'class' => true,
+				'id'    => true,
+			], 
+                        // Add any HTML tags you want to allow
+		]
+	);
+}
+
+// usage: wp_kses( $string_to_escape, extended_kses_post_html() );
