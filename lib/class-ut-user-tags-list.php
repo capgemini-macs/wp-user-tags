@@ -106,7 +106,7 @@ class User_Tags_List extends WP_List_Table {
 	function column_taxonomy( $item ) {
 		$taxonomy_slug = ! empty( $item['slug'] ) ? $item['slug'] : ut_taxonomy_name( $item['name'] );
 		//var_dump($user_info);
-		echo esc_html($taxonomy_slug);
+		echo wp_kses($taxonomy_slug, extended_kses_post_html() );
 	}
 
 	function column_name( $item ) {

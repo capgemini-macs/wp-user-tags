@@ -100,7 +100,7 @@ function wp_ut_tag_box() {
 
 				<p class="howto"><?php esc_html_e( 'Separate tags with commas', WP_UT_TRANSLATION_DOMAIN ); ?></p>
 
-				<div class="tagchecklist"><?php echo esc_html($html); ?></div>
+				<div class="tagchecklist"><?php echo  wp_kses($html, extended_kses_post_html() ); ?></div>
 				<input type="hidden" name="user-tags[<?php echo esc_html($taxonomy->name); ?>]" id="user-tags-<?php echo esc_html($taxonomy->name); ?>" value="<?php echo esc_html($user_tags); ?>"/>
 			</div>
 			<!--Display Tag cloud for most used terms-->
