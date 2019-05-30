@@ -41,7 +41,7 @@ get_header(); ?>
                             </li>';
 							$template_content .= apply_filters( 'ut_tepmplate_content', $c, $user_id );
 						}
-						echo $template_content; ?>
+						echo esc_html($template_content); ?>
 					</ul>
 				</div>
 			<?php

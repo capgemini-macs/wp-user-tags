@@ -14,10 +14,10 @@ class Ut_User_Tag_Cloud {
 			'term' => '',
 			'limit' =>  25
 		), $atts));
-		echo "<pre>Variables";
+		echo wp_kses("<pre>Variables", extended_kses_post_html() );
 		print_r( $term);
 		print_r( $limit );
-		echo "</pre>";
+		echo wp_kses("</pre>", extended_kses_post_html() );
 	}
 }
 new Ut_User_Tag_Cloud();
