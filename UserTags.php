@@ -139,8 +139,8 @@ class UserTags {
 			}
 		} ?>
 		<div class="wrap nosubsub user-taxonomies-page">
-			<h2><?php _e( 'User Taxonomies', WP_UT_TRANSLATION_DOMAIN ); ?></h2>
-			<p><?php _e('This screen allows to create new Taxonomies without registering it in code, do not confuse it with category or tags screen.', 'user_taxonomy'); ?></p>
+			<h2><?php esc_html_e( 'User Taxonomies', WP_UT_TRANSLATION_DOMAIN ); ?></h2>
+			<p><?php esc_html_e('This screen allows to create new Taxonomies without registering it in code, do not confuse it with category or tags screen.', 'user_taxonomy'); ?></p>
 
 			<div id="col-container">
 				<div id="col-right"><?php
@@ -154,23 +154,23 @@ class UserTags {
 				<div id="col-left">
 					<div class="col-wrap">
 						<div class="form-wrap">
-							<h3><?php _e( $page_title, WP_UT_TRANSLATION_DOMAIN ); ?></h3>
+							<h3><?php esc_html_e( $page_title, WP_UT_TRANSLATION_DOMAIN ); ?></h3>
 
 							<form name="editusertaxonomy" id="editusertaxonomy" method="post" action="" class="validate">
 								<table class="form-table">
 									<tr class="form-field form-required">
 										<th scope="row" valign="top">
-											<label for="taxonomy_name"><?php _ex( 'Name', 'Taxonomy Name' ); ?></label>
+											<label for="taxonomy_name"><?php esc_html_e( 'Name', 'Taxonomy Name' ); ?></label>
 										</th>
 										<td>
-											<input name="taxonomy_name" id="taxonomy_name" type="text" value="<?php echo $taxonomy_name; ?>" size="40" data-required="true" maxlength="32"/>
+											<input name="taxonomy_name" id="taxonomy_name" type="text" value="<?php esc_html_e($taxonomy_name); ?>" size="40" data-required="true" maxlength="32"/>
 
-											<p class="description"><?php _e( 'The name is how it appears on your site.' ); ?></p>
+											<p class="description"><?php esc_html_e( 'The name is how it appears on your site.' ); ?></p>
 										</td>
 									</tr>
 									<?php if ( ! global_terms_enabled() ) : ?>
 										<tr>
-											<th><label for="taxonomy-slug"><?php _e( 'Taxonomy Slug' ); ?></label></th>
+											<th><label for="taxonomy-slug"><?php esc_html_e( 'Taxonomy Slug' ); ?></label></th>
 											<td>
 												<input name="taxonomy_slug" id="taxonomy-slug" type="text" value="" size="40"/>
 
@@ -180,21 +180,21 @@ class UserTags {
 									<?php endif; // global_terms_enabled() ?>
 									<tr class="form-field">
 										<th scope="row" valign="top">
-											<label for="description"><?php _e( 'Description', 'Taxonomy Description' ); ?></label>
+											<label for="description"><?php esc_html_e( 'Description', 'Taxonomy Description' ); ?></label>
 										</th>
 										<td>
-											<textarea name="description" id="description" rows="5" cols="50" class="large-text"><?php echo $taxonomy_description; ?></textarea>
+											<textarea name="description" id="description" rows="5" cols="50" class="large-text"><?php esc_html_e($taxonomy_description); ?></textarea>
 
-											<p><?php _e( 'The description is not prominent by default; however, some themes may show it.' ); ?></p>
+											<p><?php esc_html_e( 'The description is not prominent by default; however, some themes may show it.' ); ?></p>
 										</td>
 									</tr><?php
 									wp_nonce_field( 'ut_register_taxonomy', 'ut_register_taxonomy' );
-									echo ! empty( $slug ) ? '<input type="hidden" name="taxonomy_slug" value="' . $slug . '"/>' : ''; ?>
+									echo wp_kses(! empty( $slug ) ? '<input type="hidden" name="taxonomy_slug" value="' . $slug . '"/>' : '', extended_kses_post_html() ); ?>
 								</table>
 								<?php submit_button( __( 'Save' ) );
 								if ( ! empty( $slug ) ) {
 									?>
-									<a href="users.php?page=user-taxonomies" class="ut-back-link"><?php _e( '&larr; create new taxonomy', WP_UT_TRANSLATION_DOMAIN ); ?></a>
+									<a href="users.php?page=user-taxonomies" class="ut-back-link"><?php esc_html_e( '&larr; create new taxonomy', WP_UT_TRANSLATION_DOMAIN ); ?></a>
 								<?php } ?>
 							</form>
 						</div>
@@ -264,7 +264,7 @@ class UserTags {
 	}
 
 	function taxonomy_exists_notice() {
-		echo '<div class="error">' . __( 'Taxonomy already exists', WP_UT_TRANSLATION_DOMAIN ) . '</div>';
+		echo wp_kses('<div class="error">' . __( 'Taxonomy already exists', WP_UT_TRANSLATION_DOMAIN ) . '</div>', extended_kses_post_html() );
 	}
 
 	/**
@@ -452,19 +452,19 @@ class UserTags {
 			<table class="form-table user-profile-taxonomy">
 			<tr>
 				<th>
-					<label for="new-tag-user_tag_<?php echo $taxonomy->name; ?>"><?php _e( "{$taxonomy->labels->singular_name}" ) ?></label>
+					<label for="new-tag-user_tag_<?php esc_html_e($taxonomy->name); ?>"><?php esc_html_e( "{$taxonomy->labels->singular_name}" ) ?></label>
 				</th>
 				<td class="ajaxtag">
-					<input type="text" id="new-tag-user_tag_<?php echo $taxonomy->name; ?>" name="newtag[user_tag]" class="newtag form-input-tip float-left hide-on-blur" size="16" autocomplete="off" value="">
+					<input type="text" id="new-tag-user_tag_<?php esc_html_e($taxonomy->name); ?>" name="newtag[user_tag]" class="newtag form-input-tip float-left hide-on-blur" size="16" autocomplete="off" value="">
 					<input type="button" class="button tagadd float-left" value="Add">
 
-					<p class="howto"><?php _e( 'Separate tags with commas', WP_UT_TRANSLATION_DOMAIN ); ?></p>
+					<p class="howto"><?php esc_html_e( 'Separate tags with commas', WP_UT_TRANSLATION_DOMAIN ); ?></p>
 
-					<div class="tagchecklist"><?php echo $html; ?></div>
-					<input type="hidden" name="user-tags[<?php echo $taxonomy->name; ?>]" id="user-tags-<?php echo $taxonomy->name; ?>" value="<?php echo $user_tags; ?>"/>
+					<div class="tagchecklist"><?php esc_html_e($html); ?></div>
+					<input type="hidden" name="user-tags[<?php esc_html_e($taxonomy->name); ?>]" id="user-tags-<?php esc_html_e($taxonomy->name); ?>" value="<?php esc_html_e($user_tags); ?>"/>
 					<!--Display Tag cloud for most used terms-->
 					<p class="hide-if-no-js tagcloud-container">
-						<a href="#titlediv" class="tagcloud-link user-taxonomy" id="link-<?php echo $taxonomy->name; ?>"><?php echo $choose_from_text; ?></a>
+						<a href="#titlediv" class="tagcloud-link user-taxonomy" id="link-<?php esc_html_e($taxonomy->name); ?>"><?php esc_html_e($choose_from_text); ?></a>
 					</p>
 				</td>
 			</tr>
@@ -586,7 +586,7 @@ class UserTags {
 		}
 		$output .= '</ul>';
 		if ( ! empty( $output ) ) {
-			echo $output;
+			esc_html_e($output);
 		}
 		die( 1 );
 	}
@@ -652,13 +652,13 @@ class UserTags {
 			$taxonomy_slug = strlen( $taxonomy_slug ) > 32 ? substr( $taxonomy_slug, 0, 32 ) : $taxonomy_slug;
 			$taxonomy = get_taxonomy($taxonomy_slug);
 			if ( $taxonomy ) { ?>
-				<label class="screen-reader-text" for="<?php echo $taxonomy_slug; ?>"><?php esc_html_e( 'Filter by '.$name, WP_UT_TRANSLATION_DOMAIN ); ?></label>
-				<select name="<?php echo $taxonomy_slug; ?>" id="<?php echo $taxonomy_slug; ?>" class="ut-taxonomy-filter">
+				<label class="screen-reader-text" for="<?php esc_html_e($taxonomy_slug); ?>"><?php esc_html_e( 'Filter by '.$name, WP_UT_TRANSLATION_DOMAIN ); ?></label>
+				<select name="<?php esc_html_e($taxonomy_slug); ?>" id="<?php esc_html_e($taxonomy_slug); ?>" class="ut-taxonomy-filter">
 					<option value=''><?php esc_html_e( 'Filter by '.$name, WP_UT_TRANSLATION_DOMAIN ); ?></option>
 					<?php
 					$taxonomy_terms = get_terms( $taxonomy_slug );
 					foreach ( $taxonomy_terms as $taxonomy_term ) : ?>
-						<option value="<?php echo esc_attr( $taxonomy_term->slug ); ?>"<?php if ( isset( $_GET[$taxonomy_slug] ) && ! empty( $_GET[$taxonomy_slug] ) && $_GET[$taxonomy_slug] == $taxonomy_term->slug) { echo ' selected="selected"'; } ?>><?php echo $taxonomy_term->name; ?></option>
+						<option value="<?php echo esc_attr( $taxonomy_term->slug ); ?>"<?php if ( isset( $_GET[$taxonomy_slug] ) && ! empty( $_GET[$taxonomy_slug] ) && $_GET[$taxonomy_slug] == $taxonomy_term->slug) { echo wp_kses(' selected="selected"', extended_kses_post_html() ); } ?>><?php esc_html_e($taxonomy_term->name); ?></option>
 					<?php endforeach; ?>
 				</select>
 			<?php
@@ -697,14 +697,14 @@ function wp_ut_flush_rules() {
  * Show admin message for taxonomy creation
  */
 function ut_taxonomy_created() {
-	echo '<div id="message" class="updated below-h2">' . __( 'Taxonomy created', WP_UT_TRANSLATION_DOMAIN ) . '</div>';
+	echo wp_kses('<div id="message" class="updated below-h2">' . __( 'Taxonomy created', WP_UT_TRANSLATION_DOMAIN ) . '</div>', extended_kses_post_html() );
 }
 
 /**
  * Updating a taxonomy
  */
 function ut_taxonomy_updated() {
-	echo '<div id="message" class="updated below-h2">' . __( 'Taxonomy updated', WP_UT_TRANSLATION_DOMAIN ) . '</div>';
+	echo wp_kses('<div id="message" class="updated below-h2">' . __( 'Taxonomy updated', WP_UT_TRANSLATION_DOMAIN ) . '</div>', extended_kses_post_html() );
 }
 
 /**

@@ -6,6 +6,7 @@
  *
  * @return mixed
  */
+
 function ut_taxonomy_name( $name = '' ) {
 	if ( empty( $name ) ) {
 		return;
@@ -26,6 +27,7 @@ add_filter( 'taxonomy_template', 'get_custom_taxonomy_template' );
  *
  * @return string
  */
+
 function get_custom_taxonomy_template( $template = '' ) {
 
 	$taxonomy = get_query_var( 'taxonomy' );
@@ -49,6 +51,7 @@ function get_custom_taxonomy_template( $template = '' ) {
 /**
  * Shortcode for Tags UI in frontend
  */
+
 function wp_ut_tag_box() {
 	$user_id    = get_current_user_id();
 	$taxonomies = get_object_taxonomies( 'user', 'object' );
@@ -56,7 +59,7 @@ function wp_ut_tag_box() {
 	wp_enqueue_script( 'user_taxonomy_js' );
 	if ( empty ( $taxonomies ) ) {
 		?>
-		<p><?php echo __( 'No taxonomies found', WP_UT_TRANSLATION_DOMAIN ); ?></p><?php
+		<p><?php esc_html_e( 'No taxonomies found', WP_UT_TRANSLATION_DOMAIN ); ?></p><?php
 		return;
 	}
 	if ( ! is_user_logged_in() ) {
@@ -89,20 +92,20 @@ function wp_ut_tag_box() {
 				$user_tags = implode( ',', $user_tags );
 			} ?>
 			<li>
-			<label for="new-tag-user_tag_<?php echo $taxonomy->name; ?>"><?php _e( "{$taxonomy->labels->singular_name}" ) ?></label>
+			<label for="new-tag-user_tag_<?php echo esc_html($taxonomy->name); ?>"><?php echo esc_html( "{$taxonomy->labels->singular_name}" ) ?></label>
 
 			<div class="taxonomy-wrapper">
-				<input type="text" id="new-tag-user_tag_<?php echo $taxonomy->name; ?>" name="newtag[user_tag]" class="newtag form-input-tip float-left hide-on-blur" size="16" autocomplete="off" value="">
+				<input type="text" id="new-tag-user_tag_<?php echo esc_html($taxonomy->name); ?>" name="newtag[user_tag]" class="newtag form-input-tip float-left hide-on-blur" size="16" autocomplete="off" value="">
 				<input type="button" class="button tagadd float-left" value="Add">
 
-				<p class="howto"><?php _e( 'Separate tags with commas', WP_UT_TRANSLATION_DOMAIN ); ?></p>
+				<p class="howto"><?php esc_html_e( 'Separate tags with commas', WP_UT_TRANSLATION_DOMAIN ); ?></p>
 
-				<div class="tagchecklist"><?php echo $html; ?></div>
-				<input type="hidden" name="user-tags[<?php echo $taxonomy->name; ?>]" id="user-tags-<?php echo $taxonomy->name; ?>" value="<?php echo $user_tags; ?>"/>
+				<div class="tagchecklist"><?php echo  wp_kses($html, extended_kses_post_html() ); ?></div>
+				<input type="hidden" name="user-tags[<?php echo esc_html($taxonomy->name); ?>]" id="user-tags-<?php echo esc_html($taxonomy->name); ?>" value="<?php echo esc_html($user_tags); ?>"/>
 			</div>
 			<!--Display Tag cloud for most used terms-->
 			<p class="hide-if-no-js tagcloud-container">
-				<a href="#titlediv" class="tagcloud-link user-taxonomy" id="link-<?php echo $taxonomy->name; ?>"><?php echo $choose_from_text; ?></a>
+				<a href="#titlediv" class="tagcloud-link user-taxonomy" id="link-<?php echo esc_html($taxonomy->name); ?>"><?php echo esc_html($choose_from_text); ?></a>
 			</p>
 			</li><?php
 		endforeach; ?>
@@ -113,6 +116,7 @@ function wp_ut_tag_box() {
 }
 
 //shortcode
+
 add_shortcode( 'user_tags', 'wp_ut_tag_box' );
 add_action( 'in_admin_footer', 'wp_ut_ajax_url' );
 add_action( 'wp_footer', 'wp_ut_ajax_url' );
@@ -134,6 +138,7 @@ function ut_stripallslashes( $string ) {
 /**
  * Process and save user tags from shortcode
  */
+
 add_action( 'wp_loaded', 'rce_ut_process_form' );
 function rce_ut_process_form() {
 	$user_id = get_current_user_id();
@@ -154,4 +159,32 @@ function rce_ut_process_form() {
 			wp_set_object_terms( $user_id, $taxonomy_terms, $taxonomy, false );
 		}
 	}
+}
+
+/**
+* Returns a list of allowed HTML tags for wp_kses_post() method extended with custom HTML tags 
+*/
+
+function extended_kses_post_html() {
+	return array_merge(
+		wp_kses_allowed_html( 'post' ),
+		[
+			'iframe' => [
+				'src'             => true,
+				'height'          => true,
+				'width'           => true,
+				'frameborder'     => true,
+				'allowfullscreen' => true,
+			],
+			'input' => [
+				'type'  => true,
+				'max'   => true,
+				'min'   => true,
+				'name'  => true,
+				'class' => true,
+				'id'    => true,
+			], 
+			// Add any HTML tags you want to allow
+		]
+	);
 }
