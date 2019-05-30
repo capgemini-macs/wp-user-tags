@@ -176,6 +176,7 @@ function extended_kses_post_html() {
 				'frameborder'     => true,
 				'allowfullscreen' => true,
 			],
+
 			'input' => [
 				'type'  => true,
 				'max'   => true,
@@ -184,7 +185,80 @@ function extended_kses_post_html() {
 				'class' => true,
 				'id'    => true,
 			], 
-			// Add any HTML tags you want to allow
+
+			'a' => [
+				'class' => true,
+				'href'  => true,
+				'rel'   => true,
+				'title' => true,
+			],
+
+			'b' => true,
+
+			'blockquote' => true,
+			
+			'div' => [
+				'class' => true,
+				'title' => true,
+				'style' => true,
+			],
+
+			'dl' => true,
+
+			'dt' => true,
+
+			'em' => true,
+
+			'h1' => true,
+
+			'h2' => true,
+
+			'h3' => true,
+
+			'h4' => true,
+
+			'h5' => true,
+
+			'h6' => true,
+
+			'i' => true,
+
+			'img' => [
+				'alt'    => true,
+				'class'  => true,
+				'height' => true,
+				'src'    => true,
+				'width'  => true,
+			],
+
+			'li' => [
+				'class' => true,
+			],
+
+			'ol' => [
+				'class' => true,
+			],
+
+			'p' => [
+				'class' => true,
+			],
+
+			'q' => [
+				'class' => true,
+				'title' => true,
+			],
+
+			'span' => [
+				'class' => true,
+				'title' => true,
+				'style' => true,
+			],
+
+			'strong'  => true,
+
+			'ul' => [
+				'class' => true,
+			],
 		]
 	);
 }
