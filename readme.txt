@@ -1,12 +1,12 @@
 === User Tags ===
-Contributors: UmeshSingla,garrett-eclipse
+Contributors: UmeshSingla
 Donate link: https://www.paypal.com/
 Tags: Tags, taxonomies, user taxonomy, user tags
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Requires at least: 3.0
-Tested up to: 4.1
-Stable tag: trunk
+Requires at least: 3.5
+Tested up to: 4.9
+Stable tag: 1.2.7
 
 Adds an admin option to allow creating User Taxonomies and create tags for different taxonomies.
 
@@ -17,7 +17,6 @@ All taxonomies are listed in Profile page for all users which allows users to ad
 Each Tag is associated with a template, listing all users who added that tag in their profile.
 
 Supports Multisite
-
 Note:
 Only admin can manage Taxonomies.
 Users can add new tags.
@@ -31,10 +30,7 @@ Users can add new tags.
 == Changelog ==
 
 = 1.2.7 =
-* New   - Filter: `ut_tag_url_prefix` to filter the way, tags URLs are formed
-* New   - Specify a slug for taxonomy
-* New   - User Tag cloud shortcode
-* Fixed - Tag delete link in admin screen, added alert before deletion
+* Fixed - Fatal error, Initialise as array instead of string
 
 = 1.2.6 =
 * New   - Filter: `ut_template_users` in Taxonomy template to filter the list of users before displaying
@@ -101,6 +97,29 @@ Requires Wordpress 3.0 atleast
 = What if tags template are not working for me? =
 
 You just need to save permalinks once, and it will work absolutely fine for you afterwards.
+
+= If you'd like to sort the Users list in template, Use the filter `ut_template_users`, here is a e.g. =
+
+`add_filter( 'ut_template_users', 'ut_sort_users' );
+ /**
+  * Filters out the list of users in a template, and orders it by user_login
+  *
+  * @param $users
+  *
+  * @return mixed
+  */
+ function ut_sort_users( $users ) {
+
+ 	if ( empty( $users ) || ! is_array( $users ) ) {
+ 		return $users;
+ 	}
+ 	$user_query = new WP_User_Query( array( 'fields' => 'ID', 'include' => $users, 'orderby' => 'user_login' ) );
+ 	if ( ! is_wp_error( $user_query ) && ! empty( $user_list = $user_query->get_results() ) ) {
+ 		return $user_list;
+ 	}
+ 	return $users;
+ }
+`
 
 = Visit https://github.com/UmeshSingla/user-tags for support =
 
