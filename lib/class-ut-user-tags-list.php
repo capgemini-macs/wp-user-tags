@@ -80,7 +80,7 @@ class User_Tags_List extends WP_List_Table {
 			$row_class = '';
 		}
 		echo wp_kses('<tr' . $row_class . ' >', extended_kses_post_html() );
-		echo esc_html($this->single_row_columns( $item ) );
+		echo wp_kses($this->single_row_columns( $item ), extended_kses_post_html() );
 		echo wp_kses('</tr>', extended_kses_post_html() );
 	}
 

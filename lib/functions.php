@@ -100,12 +100,12 @@ function wp_ut_tag_box() {
 
 				<p class="howto"><?php esc_html_e( 'Separate tags with commas', WP_UT_TRANSLATION_DOMAIN ); ?></p>
 
-				<div class="tagchecklist"><?php echo  wp_kses($html, extended_kses_post_html() ); ?></div>
+				<div class="tagchecklist"><?php echo wp_kses($html, extended_kses_post_html() ); ?></div>
 				<input type="hidden" name="user-tags[<?php echo esc_html($taxonomy->name); ?>]" id="user-tags-<?php echo esc_html($taxonomy->name); ?>" value="<?php echo esc_html($user_tags); ?>"/>
 			</div>
 			<!--Display Tag cloud for most used terms-->
 			<p class="hide-if-no-js tagcloud-container">
-				<a href="#titlediv" class="tagcloud-link user-taxonomy" id="link-<?php echo esc_html($taxonomy->name); ?>"><?php echo esc_html($choose_from_text); ?></a>
+				<a href="#titlediv" class="tagcloud-link user-taxonomy" id="link-<?php echo esc_html($taxonomy->name); ?>"><?php echo wp_kses($choose_from_text, extended_kses_post_html() ); ?></a>
 			</p>
 			</li><?php
 		endforeach; ?>
