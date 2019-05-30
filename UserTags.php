@@ -277,7 +277,7 @@ class UserTags {
 			return;
 		}
 
-reach ( $ut_taxonomies as $ut_taxonomy ) {
+		foreach ( $ut_taxonomies as $ut_taxonomy ) {
 			global $user_tags;
 			extract( $ut_taxonomy );
 			$taxonomy_slug = ! empty( $slug ) ? $slug : ut_taxonomy_name( $name );
