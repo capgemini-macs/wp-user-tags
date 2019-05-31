@@ -8,8 +8,7 @@ get_header(); ?>
 	<section id="primary" class="content-area">
 		<div id="content" class="site-content" role="main">
 			<header class="page-header">
-				<?php
-				$taxonomy = get_taxonomy( get_query_var( 'taxonomy' ) );
+				<?php $taxonomy = get_taxonomy( get_query_var( 'taxonomy' ) );
 				$term           = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ); ?>
 				<h1 class="page-title"> <?php
 					echo apply_filters( 'ut_template_heading', sprintf( '%s: %s', __( $taxonomy->labels->name, WP_UT_TRANSLATION_DOMAIN ), __( $term->name, WP_UT_TRANSLATION_DOMAIN ) ) );
@@ -41,7 +40,7 @@ get_header(); ?>
                             </li>';
 							$template_content .= apply_filters( 'ut_tepmplate_content', $c, $user_id );
 						}
-						echo esc_html($template_content); ?>
+						echo wp_kses($template_content, extended_kses_post_html() ); ?>
 					</ul>
 				</div>
 			<?php

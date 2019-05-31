@@ -135,7 +135,7 @@ a.ntdelbutton {
     width: auto;
 }
 ul.user-taxonomy-wrapper .tagchecklist span a {
-    margin: -1px 0 0 0;
+    margin: -1px 0 0 0px;
 }
 .profile-php .user-taxonomy-wrapper .tagchecklist span a {
     margin: -1px 0 0 5px;
@@ -216,13 +216,4 @@ ul.user-profile-taxonomy .ntdelbutton {
     background: white;
     padding: 10px;
     width: 400px;
-}
-
-.ut-taxonomy-filter {
-    display:inline-block;
-    float:none;
-}
-
-.ut-reset-filters {
-    margin-left: 10px;
 }
