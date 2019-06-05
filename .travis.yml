@@ -9,11 +9,26 @@ php:
   - 7.3
 
 env:
-  - WP_PROJECT_TYPE=plugin WP_VERSION=latest WP_MULTISITE=0 WP_TEST_URL=http://localhost:12000 WP_TEST_USER=test WP_TEST_USER_PASS=test
+  - WP_PROJECT_TYPE=plugin WP_VERSION=latest WP_MULTISITE=0 WP_TEST_URL=http://localhost:12000 WP_TEST_USER=test WP_TEST_USER_PASS=test PHPCS_DIR=/tmp/phpcs PHPCOMPAT_DIR=/tmp/PHPCompatibility WPCS_DIR=/tmp/wpcs WPCSGO_DIR=/tmp/wpcs-go
 
 before_script:
   - git clone https://github.com/Seravo/wordpress-test-template wp-tests
   - bash wp-tests/bin/install-wp-tests.sh test root '' localhost $WP_VERSION
+  # install phpcs
+  - git clone -b master --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git $PHPCS_DIR
+  # install standards
+  - git clone -b master --depth 1 https://github.com/wimg/PHPCompatibility.git $PHPCOMPAT_DIR
+  - git clone -b master --depth 1 https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git $WPCS_DIR
+  - git clone -b develop --depth 1 https://github.com/Automattic/VIP-Coding-Standards $WPCSGO_DIR
+  # set install path for phpcs
+  - $PHPCS_DIR/bin/phpcs --config-set installed_paths $PHPCOMPAT_DIR,$WPCS_DIR,$WPCSGO_DIR
+  # After CodeSniffer install refresh path
+  - phpenv rehash
 
 script:
+  # Search for PHP syntax errors.
+  - find -L . -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
+  # check if plugin don't crash WP
   - cd wp-tests/spec && bundle exec rspec test.rb
+  # run phpcs
+  $PHPCS_DIR/bin/phpcs .
